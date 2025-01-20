@@ -34,12 +34,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    fetchTourismData();
+    fetchTourismData(null);
   }
 
   // Fungsi untuk mengambil data dari API
-  Future<void> fetchTourismData() async {
-    final url = Uri.parse('https://amalsolution-dev.com:20002/api/destinations');
+  Future<void> fetchTourismData(String? search) async {
+    final url = Uri.parse('https://amalsolution-dev.com:20002/api/destinations${search != null && search != "" ? '/search?query=$search' : ''}');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -66,10 +66,11 @@ class _HomePageState extends State<HomePage> {
       title: const Text("Tourista"),
       headerWidget: headerWidget(context),
       body: [
+        searchField(),
         // Mengganti ListView dengan data yang didapat dari HTTP
         isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : listView(),
+          ? const Center(child: CircularProgressIndicator())
+          : listView(),
       ],
       stretchMaxHeight: .80,
       backgroundColor: Colors.white,
@@ -93,18 +94,36 @@ class _HomePageState extends State<HomePage> {
       child: Text(
         "Unlock the World, One Trip at a Time",
         style: Theme.of(context)
-            .textTheme
-            .displayMedium!
-            .copyWith(
-              color: const Color(0xFF009688),
-              fontFamily: "Pacifico",
-              fontStyle: FontStyle.normal,
-            ),
+          .textTheme
+          .displayMedium!
+          .copyWith(
+            color: const Color(0xFF009688),
+            fontFamily: "Pacifico",
+            fontStyle: FontStyle.normal,
+          ),
       ),
     ),
   );
 }
 
+  Widget searchField() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: TextField(
+        decoration: const InputDecoration(
+          hintText: "Search destinations",
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.teal),
+            borderRadius: BorderRadius.all(Radius.circular(20))
+          ),
+        ),
+        onChanged: (value) async {
+          await fetchTourismData(value);
+        },
+      ),
+    );
+  }
 
   // Fungsi untuk membangun tampilan ListView berdasarkan data yang diambil
   ListView listView() {

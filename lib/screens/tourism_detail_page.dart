@@ -147,7 +147,9 @@ class TourismDetailPage extends StatelessWidget {
                                     bottom: 0,
                                     child: Text(
                                       "Lokasi",
-                                      style: TextStyle(fontSize: 12.0),
+                                      style: TextStyle(
+                                        fontSize: 9.0
+                                      ),
                                     ),
                                   ),
                                 ],
