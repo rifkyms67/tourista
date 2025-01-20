@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   // Fungsi untuk mengambil data dari API
   Future<void> fetchTourismData() async {
-    final url = Uri.parse('http://82.180.139.206:20001/api/destinations');
+    final url = Uri.parse('https://amalsolution-dev.com:20002/api/destinations');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (e) {
       setState(() {
-        isLoading = false;
+        isLoading = true;
       });
       if (kDebugMode) {
         print(e);
